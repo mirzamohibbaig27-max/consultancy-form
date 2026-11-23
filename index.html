@@ -803,6 +803,11 @@
   "str",
   80
  ],
+ "clientaddress": [
+  "Client_Address_GC__c",
+  "str",
+  1000
+ ],
  "clientweb": [
   "Client_Website_GC__c",
   "str",
@@ -900,7 +905,7 @@
  ]
 };
   // form fields with no Salesforce field yet (sent in the "unmapped" block)
-  var UNMAPPED = {"clientaddress": "Address"};
+  var UNMAPPED = {};
   // always mandatory (conditional ones are handled below)
   var REQUIRED_IDS = ["q1", "q2", "q3", "q4", "q5", "first_name", "last_name", "cemail", "jtitle", "grade", "empcat", "empnum", "campus", "school", "institute", "company", "clientcontact", "clientemail", "clientaddress", "postcode", "ptitle", "startdate", "enddate", "numdays", "pdesc", "q_support", "q_patent", "j1", "j2", "q_policyread", "q_coi"];
   // repeating rows: list element id, JSON key, row label, data-field -> [Salesforce API name, kind, max length]
