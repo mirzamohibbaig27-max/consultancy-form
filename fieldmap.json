@@ -1,0 +1,414 @@
+{
+ "main": {
+  "Meets_Consultancy_Definition_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "q1"
+  },
+  "Eligible_By_Employment_Status_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "q2"
+  },
+  "Primary_Purpose_Consultancy_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "q3"
+  },
+  "Over_50_Days_12_Months_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "q4"
+  },
+  "Line_Manager_Approval_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "q5"
+  },
+  "Consultant_First_Name_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "first_name"
+  },
+  "Consultant_Last_Name_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "last_name"
+  },
+  "Consultant_Email_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "cemail"
+  },
+  "Consultant_Job_Title_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "jtitle"
+  },
+  "Consultant_Grade_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "grade"
+  },
+  "Employment_Category_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "empcat"
+  },
+  "Employee_Person_Number_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "empnum"
+  },
+  "Campus_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "campus"
+  },
+  "School_GC__c": {
+   "kind": "pick",
+   "req": "Y",
+   "form": "school"
+  },
+  "Institute_Dept_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "institute"
+  },
+  "Global_Research_Institute_GC__c": {
+   "kind": "pick",
+   "req": "N",
+   "form": "gri"
+  },
+  "Client_Name_Submitted_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "company"
+  },
+  "Client_Registration_Number_GC__c": {
+   "kind": "str",
+   "req": "?",
+   "form": "clientreg"
+  },
+  "Client_Contact_Name_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "clientcontact"
+  },
+  "Client_Contact_Phone_GC__c": {
+   "kind": "str",
+   "req": "N",
+   "form": "contacttel"
+  },
+  "Client_Email_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "clientemail"
+  },
+  "Client_Website_GC__c": {
+   "kind": "str",
+   "req": "N",
+   "form": "clientweb"
+  },
+  "Client_Postcode_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "postcode"
+  },
+  "Project_name_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "ptitle"
+  },
+  "Project_Start_Date_GC__c": {
+   "kind": "date",
+   "req": "Y",
+   "form": "startdate"
+  },
+  "Project_End_Date_GC__c": {
+   "kind": "date",
+   "req": "Y",
+   "form": "enddate"
+  },
+  "Academic_Days_GC__c": {
+   "kind": "num",
+   "req": "Y",
+   "form": "numdays"
+  },
+  "Brief_Project_Description_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "pdesc"
+  },
+  "Requires_BE_Support_GC__c": {
+   "kind": "yn",
+   "req": "Y",
+   "form": "q_support"
+  },
+  "Potential_Patent_Application_GC__c": {
+   "kind": "yn",
+   "req": "Y",
+   "form": "q_patent"
+  },
+  "Consultancy_Impact_Area_GC__c": {
+   "kind": "multi",
+   "req": "Y",
+   "form": "impact"
+  },
+  "Justification_Strategic_Aims_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "j1"
+  },
+  "Justification_Workload_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "j2"
+  },
+  "Other_Consultancy_Projects_GC__c": {
+   "kind": "str",
+   "req": "?",
+   "form": "j3"
+  },
+  "Policy_Read_GC__c": {
+   "kind": "yn",
+   "req": "Y",
+   "form": "q_policyread"
+  },
+  "Potential_Conflict_Of_Interest_GC__c": {
+   "kind": "yn",
+   "req": "Y",
+   "form": "q_coi"
+  },
+  "Conflict_Of_Interest_Explanation_GC__c": {
+   "kind": "str",
+   "req": "C",
+   "form": "coi_explain"
+  },
+  "Ethical_Approval_Comments_GC__c": {
+   "kind": "str",
+   "req": "?",
+   "form": "ethics"
+  },
+  "Additional_Comments_GC__c": {
+   "kind": "str",
+   "req": "?",
+   "form": "addcomments"
+  },
+  "Personal_Payment_Pct_GC__c": {
+   "kind": "num",
+   "req": "C",
+   "form": "pct_personal"
+  },
+  "Personal_Payments_Over_25k_GC__c": {
+   "kind": "yn",
+   "req": "C",
+   "form": "q_25k"
+  }
+ },
+ "rows": {
+  "supportingStaff": {
+   "rel": "Supporting_Staff__r",
+   "type": "Supporting_Staff__c",
+   "label": "Supporting Staff",
+   "fields": {
+    "Staff_Name_GC__c": {
+     "kind": "str",
+     "max": 255
+    },
+    "Staff_Category_GC__c": {
+     "kind": "pick",
+     "max": 0
+    },
+    "Days_on_Project_GC__c": {
+     "kind": "num",
+     "max": 0
+    }
+   }
+  },
+  "nonStaffCosts": {
+   "rel": "Non_Staff_Costs__r",
+   "type": "Non_Staff_Cost__c",
+   "label": "Non-Staff Costs",
+   "fields": {
+    "Cost_Item_GC__c": {
+     "kind": "pick",
+     "max": 0
+    },
+    "Description_GC__c": {
+     "kind": "str",
+     "max": 255
+    },
+    "Cost_GC__c": {
+     "kind": "num",
+     "max": 0
+    }
+   }
+  },
+  "subcontractors": {
+   "rel": "Sub_Contractors_PG_Students__r",
+   "type": "Subcontractor_PG_Student__c",
+   "label": "Sub-Contractors / PG Students",
+   "fields": {
+    "Contractor_Name_GC__c": {
+     "kind": "str",
+     "max": 255
+    },
+    "External_Organisation_GC__c": {
+     "kind": "str",
+     "max": 255
+    },
+    "Days_on_Project_GC__c": {
+     "kind": "num",
+     "max": 0
+    },
+    "Work_Description_GC__c": {
+     "kind": "str",
+     "max": 5000
+    },
+    "Cost_GC__c": {
+     "kind": "num",
+     "max": 0
+    }
+   }
+  }
+ },
+ "len": {
+  "Meets_Consultancy_Definition_GC__c": 0,
+  "Eligible_By_Employment_Status_GC__c": 0,
+  "Primary_Purpose_Consultancy_GC__c": 0,
+  "Over_50_Days_12_Months_GC__c": 0,
+  "Line_Manager_Approval_GC__c": 0,
+  "Consultant_First_Name_GC__c": 40,
+  "Consultant_Last_Name_GC__c": 80,
+  "Consultant_Email_GC__c": 80,
+  "Consultant_Job_Title_GC__c": 100,
+  "Consultant_Grade_GC__c": 0,
+  "Employment_Category_GC__c": 0,
+  "Employee_Person_Number_GC__c": 20,
+  "Campus_GC__c": 0,
+  "School_GC__c": 0,
+  "Institute_Dept_GC__c": 0,
+  "Global_Research_Institute_GC__c": 0,
+  "Client_Name_Submitted_GC__c": 255,
+  "Client_Registration_Number_GC__c": 50,
+  "Client_Contact_Name_GC__c": 255,
+  "Client_Contact_Phone_GC__c": 40,
+  "Client_Email_GC__c": 80,
+  "Client_Website_GC__c": 255,
+  "Client_Postcode_GC__c": 80,
+  "Project_name_GC__c": 200,
+  "Project_Start_Date_GC__c": 0,
+  "Project_End_Date_GC__c": 0,
+  "Academic_Days_GC__c": 0,
+  "Brief_Project_Description_GC__c": 0,
+  "Requires_BE_Support_GC__c": 0,
+  "Potential_Patent_Application_GC__c": 0,
+  "Consultancy_Impact_Area_GC__c": 0,
+  "Justification_Strategic_Aims_GC__c": 0,
+  "Justification_Workload_GC__c": 0,
+  "Other_Consultancy_Projects_GC__c": 0,
+  "Policy_Read_GC__c": 0,
+  "Potential_Conflict_Of_Interest_GC__c": 0,
+  "Conflict_Of_Interest_Explanation_GC__c": 0,
+  "Ethical_Approval_Comments_GC__c": 0,
+  "Additional_Comments_GC__c": 0,
+  "Personal_Payment_Pct_GC__c": 0,
+  "Personal_Payments_Over_25k_GC__c": 0
+ },
+ "pick": {
+  "Meets_Consultancy_Definition_GC__c": [
+   "Yes",
+   "No"
+  ],
+  "Eligible_By_Employment_Status_GC__c": [
+   "Yes",
+   "No"
+  ],
+  "Primary_Purpose_Consultancy_GC__c": [
+   "Yes",
+   "No"
+  ],
+  "Over_50_Days_12_Months_GC__c": [
+   "Yes",
+   "No"
+  ],
+  "Line_Manager_Approval_GC__c": [
+   "Yes",
+   "No"
+  ],
+  "Consultant_Grade_GC__c": [
+   "Grade 6",
+   "Grade 7",
+   "Grade 8",
+   "Grade 9",
+   "Grade 10"
+  ],
+  "Employment_Category_GC__c": [
+   "Academic",
+   "Research",
+   "Technical (Grade 6 and above)",
+   "Professional Services (Grade 6 and above)"
+  ],
+  "Campus_GC__c": [
+   "Edinburgh",
+   "Dubai",
+   "Malaysia",
+   "Orkney",
+   "Borders"
+  ],
+  "School_GC__c": [
+   "EGIS",
+   "EPS",
+   "Lyell Centre",
+   "MACS",
+   "SoSS",
+   "STD",
+   "Global College",
+   "Other"
+  ],
+  "Institute_Dept_GC__c": [
+   "Other"
+  ],
+  "Global_Research_Institute_GC__c": [
+   "Health and Care Technologies",
+   "iNetZ+ Net Zero and Beyond",
+   "The Lyell Centre",
+   "The National Robotarium"
+  ],
+  "Consultancy_Impact_Area_GC__c": [
+   "Energy Transition and Net Zero",
+   "Climate, Environment and Sustainability",
+   "Digital Technologies, Data and AI",
+   "Advanced Manufacturing and Engineering",
+   "Health, Life Sciences and Care",
+   "Infrastructure, Construction and Transport",
+   "Food, Agriculture and Marine Economy",
+   "Business Innovation and Productivity",
+   "Financial and Professional Services",
+   "Creative Industries, Culture and Tourism",
+   "Education, Skills and Workforce Development",
+   "Inclusive Growth and Community Development",
+   "Public Services, Policy and Governance",
+   "Defence, Security and Resilience",
+   "Other Priority Area",
+   "No Identifiable Priority / Unsure"
+  ],
+  "Cost_Item_GC__c": [
+   "Equipment",
+   "Access to University Facilities",
+   "Specialist Software/Licenses",
+   "Materials",
+   "Travel and Subsistence",
+   "Consumables (including report preparation costs)",
+   "Other"
+  ],
+  "Staff_Category_GC__c": [
+   "Academic",
+   "Research",
+   "Technical",
+   "Professional Services",
+   "Clerical"
+  ]
+ }
+}
