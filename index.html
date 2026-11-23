@@ -1,5 +1,5 @@
 <!--
-  University Consultancy Request - application form (V11)
+  University Consultancy Request - application form (V12)
   Submits JSON to /api/submit (see SUBMIT_URL in the script). The server-side step
   signs in to Salesforce and creates the Consultancy and its child records in one request.
   The field mapping (form field -> Salesforce API name) is the FIELD_MAP / ROW_MAP block in the
@@ -595,11 +595,38 @@
     var btn = form.querySelector('button.submit');
     var gate = document.getElementById('b_gate');
     var q = function(id){ return document.getElementById(id); };
+    // inline error messages (created here so each sits directly under its field)
+    function addBanner(afterId, id, text){
+      var el = document.createElement('div'); el.className = 'banner stop'; el.id = id; el.setAttribute('role','alert'); el.textContent = text;
+      var host = q(afterId).closest('.field') || q(afterId).parentNode; host.appendChild(el);
+    }
+    addBanner('q_policyread', 'b_policy', "You must read the University's Global Consultancy Policy before you can submit this form. Please read it using the link above, then change your answer to Yes.");
+    addBanner('startdate',    'b_start',  'The start date cannot be in the past. Please choose today or a later date.');
+    addBanner('enddate',      'b_end',    'The completion date cannot be before the start date.');
+    addBanner('pct_personal', 'b_pct',    'The personal payment cannot be more than 50%. The value has been set to 50.');
+    function todayStr(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+    var today = todayStr();
+    q('startdate').min = today;
+    q('startdate').addEventListener('change', function(){ q('enddate').min = q('startdate').value || today; });
+    // the percentage can never exceed 50 (or go below 0)
+    var pctWarn = false;
+    q('pct_personal').addEventListener('input', function(){
+      var v = parseFloat(q('pct_personal').value);
+      if (!isNaN(v) && v > 50){ q('pct_personal').value = 50; pctWarn = true; }
+      else if (!isNaN(v) && v < 0){ q('pct_personal').value = 0; pctWarn = true; }
+      else pctWarn = false;
+      check();
+      if (pctWarn) setTimeout(function(){ pctWarn = false; check(); }, 3000);
+    });
     var rules = [
       {id:'q1', banner:'b1', hit:function(){ return q('q1').value === 'No'; },  text:'your proposal does not appear to meet the policy definition of consultancy'},
       {id:'q2', banner:'b2', hit:function(){ return q('q2').value === 'No'; },  text:'you are not eligible by employment status'},
       {id:'q4', banner:'b4', hit:function(){ return q('q4').value === 'Yes' && q('q3').value !== 'Yes'; }, text:'this would take you over the 50-day/12-month cap'},
-      {id:'q5', banner:'b5', hit:function(){ return q('q5').value === 'No'; },  text:"you do not have your line manager's approval"}
+      {id:'q5', banner:'b5', hit:function(){ return q('q5').value === 'No'; },  text:"you do not have your line manager's approval"},
+      {id:'q_policyread', banner:'b_policy', hit:function(){ return q('q_policyread').value === 'No'; }, text:"you have not read the University's Global Consultancy Policy"},
+      {id:'startdate', banner:'b_start', hit:function(){ var v = q('startdate').value; return !!v && v < today; }, text:'the start date is in the past'},
+      {id:'enddate', banner:'b_end', hit:function(){ var a = q('startdate').value, b = q('enddate').value; return !!a && !!b && b < a; }, text:'the completion date is before the start date'},
+      {id:'pct_personal', banner:'b_pct', hit:function(){ var v = parseFloat(q('pct_personal').value); return pctWarn || (!isNaN(v) && (v > 50 || v < 0)); }, text:'the personal payment percentage cannot be more than 50%'}
     ];
     function check(){
       var reasons = [];
@@ -618,7 +645,7 @@
       btn.disabled = reasons.length > 0;
       return reasons.length === 0;
     }
-    ['q1','q2','q3','q4','q5'].forEach(function(id){ q(id).addEventListener('change', check); });
+    ['q1','q2','q3','q4','q5','q_policyread','startdate','enddate'].forEach(function(id){ q(id).addEventListener('change', check); q(id).addEventListener('input', check); });
     // capture phase: runs before every other submit handler, so nothing can slip through (including Enter key)
     form.addEventListener('submit', function(e){
       if (!check()){
@@ -668,7 +695,7 @@
   // V11 SUBMISSION: field mapping, validation and send
   // =====================================================================
   var SUBMIT_URL = window.SUBMIT_URL_OVERRIDE || '/api/submit';
-  var FORM_VERSION = 'V11';
+  var FORM_VERSION = 'V12';
   // form field id -> [Salesforce API name, kind, max length (0 = none)]
   var FIELD_MAP = {
  "q1": [
