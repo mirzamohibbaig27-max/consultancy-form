@@ -52,8 +52,6 @@ function validate(payload) {
     if (api === 'Personal_Payment_Pct_GC__c' || api === 'Personal_Payments_Over_25k_GC__c') need = !surplusOff;
     if (need && (c[api] === undefined || c[api] === '')) errors.push('Missing: ' + (def.form || api));
   }
-  // clientaddress has no Salesforce field, so it is mandatory here
-  if (!payload.unmapped || !String(payload.unmapped.clientaddress || '').trim()) errors.push('Missing: clientaddress');
   if (c.Project_Start_Date_GC__c && c.Project_End_Date_GC__c && c.Project_End_Date_GC__c < c.Project_Start_Date_GC__c) errors.push('The completion date cannot be before the start date.');
   if (c.Project_Start_Date_GC__c && c.Project_Start_Date_GC__c < todayLondon()) errors.push('The start date cannot be in the past.');
   if (c.Policy_Read_GC__c !== true) errors.push('You must read the University Global Consultancy Policy before submitting.');
@@ -121,9 +119,6 @@ async function recordTypeId(env, fetchFn, ver) {
 
 function buildTree(payload, rtId) {
   const c = Object.assign({}, payload.consultancy);
-  // client address has no Salesforce field yet: keep it with the additional comments so it is not lost
-  const addr = String((payload.unmapped || {}).clientaddress || '').trim();
-  if (addr) c.Additional_Comments_GC__c = ((c.Additional_Comments_GC__c ? c.Additional_Comments_GC__c + '\n\n' : '') + 'Client address (from form): ' + addr).slice(0, 32768);
   const root = Object.assign({ attributes: { type: 'Consultancy__c', referenceId: 'c1' } }, c, { RecordTypeId: rtId, Stage_GC__c: STAGE,
     // submitting the form is the consultant's declaration (set here, never taken from the browser)
     Consultant_Declaration_Confirmed_GC__c: true, Consultant_Declaration_Date_GC__c: new Date().toISOString() });

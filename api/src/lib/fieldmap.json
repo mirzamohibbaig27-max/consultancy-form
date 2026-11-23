@@ -204,6 +204,11 @@
    "kind": "yn",
    "req": "C",
    "form": "q_25k"
+  },
+  "Client_Address_GC__c": {
+   "kind": "str",
+   "req": "Y",
+   "form": "clientaddress"
   }
  },
  "rows": {
@@ -314,7 +319,8 @@
   "Ethical_Approval_Comments_GC__c": 0,
   "Additional_Comments_GC__c": 0,
   "Personal_Payment_Pct_GC__c": 0,
-  "Personal_Payments_Over_25k_GC__c": 0
+  "Personal_Payments_Over_25k_GC__c": 0,
+  "Client_Address_GC__c": 1000
  },
  "pick": {
   "Meets_Consultancy_Definition_GC__c": [
