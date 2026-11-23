@@ -9,6 +9,8 @@ const MAX_ROWS = 50;
 let tokenCache = null;   // { token, instanceUrl, expires }
 let rtCache = null;      // { id, key }
 
+function todayLondon() { return new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/London' }); }
+
 function fail(status, message, detail) { return { status, body: { message }, detail }; }
 
 // ---------- validation (the server never trusts the browser) ----------
@@ -52,7 +54,9 @@ function validate(payload) {
   }
   // clientaddress has no Salesforce field, so it is mandatory here
   if (!payload.unmapped || !String(payload.unmapped.clientaddress || '').trim()) errors.push('Missing: clientaddress');
-  if (c.Project_Start_Date_GC__c && c.Project_End_Date_GC__c && c.Project_End_Date_GC__c < c.Project_Start_Date_GC__c) errors.push('End date is before start date.');
+  if (c.Project_Start_Date_GC__c && c.Project_End_Date_GC__c && c.Project_End_Date_GC__c < c.Project_Start_Date_GC__c) errors.push('The completion date cannot be before the start date.');
+  if (c.Project_Start_Date_GC__c && c.Project_Start_Date_GC__c < todayLondon()) errors.push('The start date cannot be in the past.');
+  if (c.Policy_Read_GC__c !== true) errors.push('You must read the University Global Consultancy Policy before submitting.');
   if (typeof c.Academic_Days_GC__c === 'number' && c.Academic_Days_GC__c <= 0) errors.push('Academic days must be above zero.');
   if (typeof c.Personal_Payment_Pct_GC__c === 'number' && (c.Personal_Payment_Pct_GC__c < 0 || c.Personal_Payment_Pct_GC__c > 50)) errors.push('Personal payment percentage must be 0 to 50.');
 
@@ -120,7 +124,9 @@ function buildTree(payload, rtId) {
   // client address has no Salesforce field yet: keep it with the additional comments so it is not lost
   const addr = String((payload.unmapped || {}).clientaddress || '').trim();
   if (addr) c.Additional_Comments_GC__c = ((c.Additional_Comments_GC__c ? c.Additional_Comments_GC__c + '\n\n' : '') + 'Client address (from form): ' + addr).slice(0, 32768);
-  const root = Object.assign({ attributes: { type: 'Consultancy__c', referenceId: 'c1' } }, c, { RecordTypeId: rtId, Stage_GC__c: STAGE });
+  const root = Object.assign({ attributes: { type: 'Consultancy__c', referenceId: 'c1' } }, c, { RecordTypeId: rtId, Stage_GC__c: STAGE,
+    // submitting the form is the consultant's declaration (set here, never taken from the browser)
+    Consultant_Declaration_Confirmed_GC__c: true, Consultant_Declaration_Date_GC__c: new Date().toISOString() });
   for (const [key, def] of Object.entries(map.rows)) {
     const list = Array.isArray(payload[key]) ? payload[key] : [];
     if (!list.length) continue;
@@ -145,8 +151,11 @@ async function handle(payload, env, fetchFn, principal) {
     const r = await sf(env, fetchFn, 'POST', '/services/data/' + ver + '/composite/tree/Consultancy__c', tree);
     if (!r.ok || r.json.hasErrors) return fail(502, 'We could not save your request. Please try again, or email consultancy@hw.ac.uk.', 'Salesforce rejected the request: ' + JSON.stringify(r.json).slice(0, 1500));
     const id = r.json.results[0].id;
-    const rec = await sf(env, fetchFn, 'GET', '/services/data/' + ver + '/sobjects/Consultancy__c/' + id + '?fields=Name');
-    return { status: 200, body: { projectId: rec.ok ? rec.json.Name : id }, submitter: principal && principal.userDetails };
+    let rec = await sf(env, fetchFn, 'GET', '/services/data/' + ver + '/sobjects/Consultancy__c/' + id + '?fields=Name,Project_Title_GC__c');
+    if (!rec.ok) rec = await sf(env, fetchFn, 'GET', '/services/data/' + ver + '/sobjects/Consultancy__c/' + id + '?fields=Name');
+    // reference shown to the consultant: the Project Title formula (Project ID - last name - client), falling back to the Project ID
+    const ref = rec.ok ? (rec.json.Project_Title_GC__c || rec.json.Name) : id;
+    return { status: 200, body: { projectId: ref }, submitter: principal && principal.userDetails };
   } catch (e) {
     return fail(502, 'We could not save your request. Please try again, or email consultancy@hw.ac.uk.', String(e && e.message || e));
   }
