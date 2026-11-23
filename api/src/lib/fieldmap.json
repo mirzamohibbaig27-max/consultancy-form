@@ -288,7 +288,7 @@
   "Employee_Person_Number_GC__c": 20,
   "Campus_GC__c": 0,
   "School_GC__c": 0,
-  "Institute_Dept_GC__c": 0,
+  "Institute_Dept_GC__c": 255,
   "Global_Research_Institute_GC__c": 0,
   "Client_Name_Submitted_GC__c": 255,
   "Client_Registration_Number_GC__c": 50,
@@ -365,9 +365,6 @@
    "SoSS",
    "STD",
    "Global College",
-   "Other"
-  ],
-  "Institute_Dept_GC__c": [
    "Other"
   ],
   "Global_Research_Institute_GC__c": [
