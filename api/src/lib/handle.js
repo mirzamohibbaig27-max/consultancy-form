@@ -33,6 +33,7 @@ function validate(payload) {
       if (map.pick[k] && k !== 'Consultancy_Impact_Area_GC__c' && !map.pick[k].includes(v)) errors.push(k + ' has an unrecognised value');
       if (k === 'Consultancy_Impact_Area_GC__c' && !v.split(';').every(x => map.pick[k].includes(x))) errors.push(k + ' has an unrecognised value');
       if (def.kind === 'date' && !/^\d{4}-\d{2}-\d{2}$/.test(v)) errors.push(k + ' must be a date');
+      if (k === 'Client_Contact_Phone_GC__c' && v) { const d = v.replace(/\D/g, '').length; if (!/^[0-9+()\-\s]{1,20}$/.test(v) || d < 7 || d > 15) errors.push('Contact telephone number is not valid.'); }
     }
   }
   if (errors.length) return errors;
