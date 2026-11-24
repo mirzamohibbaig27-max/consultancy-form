@@ -264,7 +264,7 @@
       </div>
       <div class="field"><label for="clientaddress">Address</label><input type="text" id="clientaddress" name="00N_company_address"></div>
       <div class="row">
-        <div class="field"><label for="clientweb">Website</label><input type="url" id="clientweb" name="00N_client_website"></div>
+        <div class="field"><label for="clientweb">Website</label><input type="text" inputmode="url" autocomplete="url" id="clientweb" name="00N_client_website" placeholder="www.example.com"></div>
         <div class="field"><label for="postcode">Post Code</label><input type="text" id="postcode" name="00N_post_code"></div>
       </div>
     </fieldset>
@@ -1012,6 +1012,16 @@
         el.value = el.value.trim();
         if (el.required && !el.value) blanks.push(el);
       });
+      // website: accept www.example.com, add https:// ourselves, reject anything that is not an address
+      var web = document.getElementById('clientweb');
+      if (web && web.value){
+        if (!/^https?:\/\//i.test(web.value)) web.value = 'https://' + web.value;
+        if (!/^https?:\/\/[^\s\/.]+(\.[^\s\/.]+)+(\/\S*)?$/i.test(web.value)){
+          showError('<strong>Website</strong> does not look like a web address. Use a form like www.example.com, or leave it empty.');
+          web.focus({preventScroll:true});
+          return;
+        }
+      }
       if (blanks.length){
         var names = blanks.map(function(el){ var l = el.labels && el.labels[0]; return l ? l.textContent.replace(/\s+/g,' ').trim() : el.id; });
         showError('<strong>Please complete:</strong> ' + names.join('; ') + '. These cannot be left empty or contain only spaces.');
