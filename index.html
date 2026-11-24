@@ -1,5 +1,5 @@
 <!--
-  University Consultancy Request - application form (V12)
+  University Consultancy Request - application form (V13)
   Submits JSON to /api/submit (see SUBMIT_URL in the script). The server-side step
   signs in to Salesforce and creates the Consultancy and its child records in one request.
   The field mapping (form field -> Salesforce API name) is the FIELD_MAP / ROW_MAP block in the
@@ -283,7 +283,7 @@
         </div>
         <div class="field"><label for="enddate">Estimated completion date (dd/mm/yy)</label><input type="date" id="enddate" name="00N_end_date" min="2026-01-01" max="2046-12-31"></div>
       </div>
-      <div class="field" style="max-width:420px;"><label for="numdays">Number of days of consultancy to be provided by Consultant</label><input type="number" id="numdays" name="00N_est_days" min="0"></div>
+      <div class="field" style="max-width:420px;"><label for="numdays">Number of days of consultancy to be provided by Consultant</label><input type="number" id="numdays" name="00N_est_days" min="1"></div>
     </fieldset>
 
     <!-- ===================== STEP 2: BRIEF PROJECT DESCRIPTION ===================== -->
@@ -580,8 +580,10 @@
     }
     boxes.forEach(function(b){ b.addEventListener('change', sync); });
     document.getElementById('consultancyForm').addEventListener('submit', function(e){
+      window.__blocked = false;
       if (!sync()){
         e.preventDefault();
+        window.__blocked = true;
         banner.classList.add('show');
         document.getElementById('impactField').scrollIntoView({behavior:'smooth', block:'center'});
       }
@@ -695,7 +697,7 @@
   // V11 SUBMISSION: field mapping, validation and send
   // =====================================================================
   var SUBMIT_URL = window.SUBMIT_URL_OVERRIDE || '/api/submit';
-  var FORM_VERSION = 'V12';
+  var FORM_VERSION = 'V13';
   // form field id -> [Salesforce API name, kind, max length (0 = none)]
   var FIELD_MAP = {
  "q1": [
@@ -1003,6 +1005,19 @@
       e.preventDefault();
       if (e.defaultPrevented && window.__blocked) return;
       bSend.classList.remove('show');
+      // trim text and flag required fields that hold only spaces
+      var blanks = [];
+      form.querySelectorAll('input[type=text],input[type=email],input[type=url],input:not([type]),textarea').forEach(function(el){
+        if (el.closest('.record-card') || el.disabled) return;
+        el.value = el.value.trim();
+        if (el.required && !el.value) blanks.push(el);
+      });
+      if (blanks.length){
+        var names = blanks.map(function(el){ var l = el.labels && el.labels[0]; return l ? l.textContent.replace(/\s+/g,' ').trim() : el.id; });
+        showError('<strong>Please complete:</strong> ' + names.join('; ') + '. These cannot be left empty or contain only spaces.');
+        blanks[0].focus({preventScroll:true});
+        return;
+      }
       var r = buildPayload();
       if (r.problems.length){
         showError('<strong>Please complete or remove:</strong> ' + r.problems.join('; ') + '. A row can be left empty, but once you start it every field is needed.');
